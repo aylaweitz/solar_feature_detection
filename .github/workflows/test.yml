@@ -1,0 +1,19 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [ main ] # pull on main
+
+jobs:
+  run_style_check: # Checking imports and env is set up OK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mamba-org/setup-micromamba@v1
+        with:
+          activate-environment: dots_env
+          environment-file: env.yml
+      - run: python src/imports.py
