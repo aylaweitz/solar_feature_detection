@@ -11,9 +11,13 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v4
-      - uses: mamba-org/setup-micromamba@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up micromamba
+        uses: mamba-org/provision-with-micromamba@v10
         with:
-          activate-environment: dots_env
           environment-file: env.yml
-      - run: python src/imports.py
+
+      - name: Try out importing everything
+        run: python src/imports.py
