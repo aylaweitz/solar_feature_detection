@@ -6,21 +6,19 @@ on:
 
 jobs:
   run_imports_check: # Checking imports and env is set up OK
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
+    strategy:
+        matrix:
+          os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up micromamba
-        uses: mamba-org/provision-with-micromamba@v10
+        uses: mamba-org/setup-micromamba@v1
         with:
+          micromamba-version: "latest"
           environment-file: env.yml
-      
-      - name: Create env
-        run: micromamba create -f env.yml -n dots_env
 
       - name: Try out importing everything inside env
         run: python src/imports.py
