@@ -18,6 +18,9 @@ jobs:
         uses: mamba-org/provision-with-micromamba@v10
         with:
           environment-file: env.yml
+      
+      - name: Create env
+        run: micromamba create -f env.yml -n dots_env
 
-      - name: Try out importing everything
+      - name: Try out importing everything inside env
         run: python src/imports.py
