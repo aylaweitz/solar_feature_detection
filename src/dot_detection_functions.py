@@ -472,8 +472,8 @@ class dot():
             if next_frame < 0 or next_frame > len(obs)-1: # if reach the beginning or end of the observation, stop searching
                 break
 
-            searchx = [first_x-dist, first_x+dist] # create search region centered around dot observation
-            searchy = [first_y-dist, first_y+dist]
+            searchx = [int(first_x-dist), int(first_x+dist)] # create search region centered around dot observation
+            searchy = [int(first_y-dist), int(first_y+dist)]
 
             before_detection = search_for_dots(frame = next_frame, 
                                                 obs = obs,
@@ -1371,5 +1371,5 @@ def convert_pix_to_dist(image, pix_val):
     pixscale_x = image.scale[0] # deg/pix in x
     pixscale_y = image.scale[1] # deg/pix in y
     d_sun = image.dsun # Observer distance from the center of the Sun
-    return ((pix_val*u.pix * pixscale_x).to(u.rad) * d_sun) / (u.rad)
+    return (((pix_val*u.pix * pixscale_x).to(u.rad) * d_sun) / (u.rad)).to(u.km).value # km
         
