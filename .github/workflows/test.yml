@@ -1,0 +1,27 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [ main ] # pull on main
+
+jobs:
+  run_imports_check: # Checking imports and env is set up OK
+    strategy:
+        matrix:
+          os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up micromamba
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          micromamba-version: "latest"
+          environment-file: env.yml
+
+      - name: Try out importing everything inside env
+        run: python src/imports.py
