@@ -8,6 +8,42 @@ from dot_detection_functions import *
 
 ####### 2D GAUSSIAN FUNCTION ########
 def twoD_Gaussian(xy, amplitude, xo, yo, sigma_x, sigma_y, theta, offset):
+    """
+    Computes the value of a 2D Gaussian function at the given points (x, y).
+
+    Parameters
+    ----------
+    xy: tuple of array-like
+        A tuple of two arrays representing the x and y coordinates at which to evaluate the Gaussian function. 
+        Both arrays must have the same shape.
+
+    amplitude: float
+        The height of the peak of the Gaussian function.
+
+    xo: float, int
+        The x-coordinate of the center of the Gaussian function.
+
+    yo: float, int
+        The y-coordinate of the center of the Gaussian function.
+
+    sigma_x: float
+        The standard deviation (spread) of the Gaussian function in the x direction.
+
+    sigma_y: float
+        The standard deviation (spread) of the Gaussian function in the y direction.
+
+    theta: float
+        The rotation angle of the Gaussian function, measured in radians. This defines the orientation 
+        of the major axis of the elliptical Gaussian with respect to the x-axis.
+
+    offset: float
+        A constant offset added to the Gaussian function value. This can represent a baseline or background level.
+
+    Returns
+    -------
+    g: array
+        A 1D array of the evaluated Gaussian function values, flattened from the original 2D shape.
+    """
     x, y = xy
     xo = float(xo)
     yo = float(yo)    
@@ -76,7 +112,12 @@ def fit_2d_gaussian(one_dot, frame, dataset, R, plotting=False, bounds=None):
     if plotting == True:
         plt.imshow(data_subset, cmap=plt.cm.jet, origin='lower',
                 extent=(x.min(), x.max(), y.min(), y.max()))
-        plt.contour(x, y, data_fitted.reshape(data_subset.shape), 5, colors='w')
+        # plt.contour(x, y, data_fitted.reshape(data_subset.shape), 5, colors='w')
+
+        levels = [np.exp(-4.5), np.exp(-2), np.exp(-0.5)]  # Contour levels for 1, 2, and 3 sigma ?
+        CS = plt.contour(x, y, data_fitted.reshape(data_subset.shape), levels=levels, colors='w') # drawing contours at 1, 2, 3 sigma levels
+        plt.clabel(CS, inline=True, fontsize=10)
+
         plt.show()
 
     return popt, pcov, True
@@ -106,7 +147,7 @@ def get_size(one_dot, peak_i, dataset, R, plotting=False, bounds=None):
         sigma_minor = min(sigma_1, sigma_2)
 
         # Convert to FWHM
-        FWHM_major = 2 * np.sqrt(2 * np.log(2)) * sigma_major
+        FWHM_major = 2 * np.sqrt(2 * np.log(2)) * sigma_major # np.log is ln 
         FWHM_minor = 2 * np.sqrt(2 * np.log(2)) * sigma_minor
 
         # errors 
