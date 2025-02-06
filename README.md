@@ -3,6 +3,3 @@
 Techniques for identifying and tracking small-scale bright features in a time series of [SunPy](https://github.com/sunpy/sunpy) maps.
 
 Uses a [Difference of Gaussian (DoG)](https://scikit-image.org/docs/stable/api/skimage.feature.html#skimage.feature.blob_dog) approach.
-
-## Usage
-...
